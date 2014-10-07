@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<xsd:schema 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://www.mantr.com/cricket/CricketScoringService/schema" 
+		xmlns:css="http://www.mantr.com/cricket/CricketScoringService/schema" 
+		elementFormDefault="qualified">
+	
+			
+			<xsd:complexType name = "AccountTransferObject">
+				<xsd:sequence>
+					<xsd:element name = "account_id" type = "xsd:int"/>
+					<xsd:element name = "emailaddress" type = "xsd:string"/>
+					<xsd:element name = "create_datetime" type = "xsd:dateTime"/>
+					<xsd:element name = "cricket_match" type = "css:MatchTransferObject" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			
+			
+			<xsd:complexType name = "MatchTransferObject">
+				<xsd:sequence>
+					<xsd:element name = "match_id" type = "xsd:int"/>
+					<xsd:element name = "description" type = "xsd:string"/>
+					<xsd:element name = "create-datetime" type = "xsd:dateTime"/>
+					<xsd:element name = "match_date" type = "xsd:date"/>
+					<xsd:element name = "match_team" type = "css:TeamTransferObject" minOccurs="2" maxOccurs="2"/>
+					<xsd:element name = "delivery" type = "css:DeliveryTransferObject" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="TeamTransferObject">
+				<xsd:sequence>
+					<xsd:element name = "team_id" type = "xsd:int"/>
+					<xsd:element name = "batting_innings" type = "xsd:short"/>
+					<xsd:element name = "name" type = "xsd:string"/>
+					<xsd:element name = "team_player" type = "css:PlayerTransferObject" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="PlayerTransferObject">
+				<xsd:sequence>	
+					<xsd:element name = "player_id" type = "xsd:int"/>
+					<xsd:element name = "first_name" type = "xsd:string"/>
+					<xsd:element name = "last_name" type = "xsd:string"/>
+					<xsd:element name = "batting_position" type = "xsd:short"/>
+					<xsd:element name = "bowling_position" type = "xsd:short"/>
+					
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DeliveryTransferObject">
+				<xsd:sequence>
+					<xsd:element name = "key" type = "css:DeliveryKeyTransferObject"/>
+					<xsd:element name = "legal_delivery_sequence_number" type ="xsd:short"/>
+					<xsd:element name = "striker_position" type ="xsd:short"/>
+					<xsd:element name = "nonstriker_position" type ="xsd:short"/>
+					<xsd:element name = "illegal_delivery_type">
+						<xsd:simpleType>
+							<xsd:restriction base = "xsd:string">
+								<xsd:enumeration value="WIDE"/>
+								<xsd:enumeration value="NOBALL"/>
+								<xsd:enumeration value="NOBALL_FOOT"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name = "freehit_ind" type = "xsd:boolean"/>
+					<xsd:element name = "batsman_runs" type = "xsd:short"/>
+					<xsd:element name = "extras" type = "xsd:short"/>
+					<xsd:element name = "boundary" type = "xsd:boolean"/>
+					<xsd:element name = "overthrow" type = "xsd:boolean"/>
+					<xsd:element name = "team_total-runs" type = "xsd:short"/>
+					<xsd:element name = "dismissal" type = "xsd:boolean"/>
+					<xsd:element name = "position_disissed" type = "xsd:short"/>
+					<xsd:element name = "how_out">
+						<xsd:simpleType>
+							<xsd:restriction base = "xsd:string">
+								<xsd:enumeration value="RETIRED"/>
+								<xsd:enumeration value="BOWLED"/>
+								<xsd:enumeration value="TIMEDOUT"/>
+								<xsd:enumeration value="CAUGHT"/>
+								<xsd:enumeration value="HANDLED_BALL"/>
+								<xsd:enumeration value="HITBALL_TWICE"/>
+								<xsd:enumeration value="HITWICKET"/>
+								<xsd:enumeration value="LBW"/>
+								<xsd:enumeration value="OBSTRUCTING_FIELD"/>
+								<xsd:enumeration value="STUMPED"/>
+								<xsd:enumeration value="RUNOUT"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name = "dismissal_end">
+						<xsd:simpleType>
+							<xsd:restriction base = "xsd:string">
+								<xsd:enumeration value="STRIKER"/>
+								<xsd:enumeration value="NON_STRIKER"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name = "assist_id" type = "xsd:int"/>
+					<xsd:element name = "commentary" type = "xsd:string"/>
+					<xsd:element name = "notes" type = "xsd:string"/>
+					<xsd:element name = "delivery_timestamp" type = "xsd:dateTime"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DeliveryKeyTransferObject">
+				<xsd:sequence>
+					<xsd:element name = "match_id" type = "xsd:int"/>
+					<xsd:element name = "innings" type = "xsd:byte"/>
+					<xsd:element name = "over" type = "xsd:byte"/>
+					<xsd:element name = "DeliverySequence" type = "xsd:short"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DeliveryAdviceTransferObject">
+				<xsd:sequence>
+					<xsd:element name = "delivery_sequence_number" type = "xsd:int"/>
+					<xsd:element name = "legal_delivery_sequence_number" type = "xsd:int"/>
+					<xsd:element name = "over_number" type = "xsd:int"/>
+					<xsd:element name = "freehit" type = "xsd:boolean"/>
+					<xsd:element name = "striker_position" type = "xsd:int"/>
+					<xsd:element name = "non_striker_position" type = "xsd:int"/>
+				</xsd:sequence>
+			</xsd:complexType>
+    		
+    		
+    		
+    		
+    		
+	
+			<xsd:element name="CreateNewAccount">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="emailaddress" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CreateNewAccountResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="account" type="css:AccountTransferObject"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveAccount">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="emailaddress" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveAccountResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="account" type="css:AccountTransferObject"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CreateMatch">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="account_id" type="xsd:int"/>
+						<xsd:element name="teamNames" type="xsd:string" minOccurs="2" maxOccurs="2"/>
+						<xsd:element name="description" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CreateMatchResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="match" type="css:MatchTransferObject"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveMatches">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="emailaddress" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveMatchesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="match" type="css:MatchTransferObject" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveDeliveries">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="match_id" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveDeliveriesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="delivery" type="css:DeliveryTransferObject" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ClearMatchScore">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="match_id" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ClearMatchScoreResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="delivery_count" type="xsd:int"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RecordDelivery">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="delivery" type="css:DeliveryTransferObject"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RecordDeliveryResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="advice" type="css:DeliveryAdviceTransferObject"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveDelivery">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="key" type="css:DeliveryKeyTransferObject"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RetrieveDeliveryResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+		
+						<xsd:element name="delivery" type="css:DeliveryTransferObject"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+	
+	
+	
+</xsd:schema>

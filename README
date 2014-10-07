@@ -1,0 +1,7 @@
+Set of Web Services for scoring a game of cricket
+Web Service Interface SOAP
+Package: WAR
+Build: Maven
+Database: MqSQL (Heroku Add on Cloud DB)
+Persistence : JPA (OpenJPA)
+Server: Tomcat

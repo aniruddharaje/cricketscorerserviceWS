@@ -1,0 +1,303 @@
+package com.mantr.cricket.scorer.server.persistence.jpa;
+
+
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.mantr.cricket.scorer.server.persistence.ScoringService;
+import com.mantr.cricket.scorer.server.persistence.entities.*;
+
+import javax.persistence.*;
+
+
+public class ScoringServiceJPA implements ScoringService {
+	private EntityManagerFactory emf;
+	
+	public ScoringServiceJPA (EntityManagerFactory entityManagerFactory) {
+		
+		emf = entityManagerFactory; 
+
+		System.out.println ("In the ScoringServiceJPA constructor");
+		if (emf == null) {
+			System.out.println("This SHOULD not be NULL");
+		}
+
+		if (emf.isOpen())
+			System.out.println("Factory is open for business");
+
+
+		//Map<String, Object> fp = emf.getProperties();
+		//System.out.println("No of properties = " + fp.size());
+
+
+	}
+
+	public boolean accountExists(String eMailAddress) {
+		
+		boolean accountExists = true;
+		
+		EntityManager em = emf.createEntityManager();
+		
+		Query q = em.createNamedQuery("findAccountByEmailAddress");
+		q.setParameter("email", eMailAddress);
+		accountExists = q.getResultList().isEmpty() ? false : true;
+		
+		em.close();
+		
+		return accountExists;
+	
+	}
+	
+	public Account retrieveAccount(String eMailAddress) {
+		
+		Account account = null;
+		EntityManager em = emf.createEntityManager();
+		
+		Query q = em.createNamedQuery("findAccountByEmailAddress");
+		q.setParameter("email", eMailAddress);
+		account = (Account)q.getResultList().get(0);
+		
+		
+		em.close();
+		
+		return account;
+	
+	}
+
+	public Account createNewAccount(String eMailAddress) {
+		EntityManager em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Account account = new Account ();
+		account.setEmailAddress(eMailAddress);
+		
+		em.persist(account);
+	
+		em.getTransaction().commit();
+		em.refresh(account);
+		em.close();
+		
+		return account;
+	}
+
+	public Match createMatch(int accountId, String[] teamNames, String description) {
+		Match match = new Match ();
+		
+		match.setDescription (description);
+		match.setMatchDate(new Date());
+		
+		for (int t = 0; t < teamNames.length; t++) {
+			Team team = createTeam(teamNames[t], (t+1));
+			match.addTeam(team);
+			
+			for (int i=1; i < 12; i++) {
+				Player player = new Player();
+				player.setBattingPosition((byte)i);
+				player.setFirstName("FName " + i);
+				player.setLastName("LName " + i);
+				
+				team.addPlayer(player);
+			}
+		}
+		
+		EntityManager em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Account account = em.find(Account.class, accountId);
+		
+		match.setAccount(account);
+		
+		em.persist(match);
+		
+		em.getTransaction().commit();
+		em.refresh(match);
+		em.close();
+		
+		return match;
+	}
+	
+	private Team createTeam (String teamName, int battingInnings) {
+		Team team = new Team ();
+		team.setBattingInnings((byte)battingInnings);
+		team.setTeamName(teamName);
+		
+		
+		
+		return team;
+	}
+
+	public DeliveryAdvice recordDelivery(int matchId, byte innings,
+			byte overNumber, byte deliverySequence,
+			byte legalDeliverySequenceNumber, byte strikerPosition,
+			byte nonStrikerPosition, IllegalDelivery illegalDeliveryType, boolean freeHit,
+			byte batsmanRuns, byte extras, Extras extrasType, boolean boundary,
+			boolean overthrow, byte teamTotalRuns, boolean dismissal,
+			byte positionDismissed, Dismissal howOut, int assistPlayerId,
+			String commentary, String notes) {
+		
+		DeliveryPK deliveryKey = new DeliveryPK();
+		deliveryKey.setMatchId(matchId);
+		deliveryKey.setInnings(innings);
+		deliveryKey.setOverNumber(overNumber);
+		deliveryKey.setDeliverySequence(deliverySequence);
+		
+		Delivery delivery = new Delivery();
+		
+		delivery.setId(deliveryKey);
+		
+		delivery.setLegalDeliverySequenceNumber(legalDeliverySequenceNumber);
+		delivery.setStrikerPosition(strikerPosition);
+		delivery.setNonstrikerPosition(nonStrikerPosition);
+		
+		delivery.setIllegalDeliveryType(illegalDeliveryType);
+		delivery.setFreeHitInd(freeHit);
+		
+		delivery.setBatsmanRuns(batsmanRuns);
+		
+		delivery.setExtras(extras);
+		delivery.setExtrasType(extrasType);
+		
+		delivery.setBoundary(boundary);
+		delivery.setOverthrow(overthrow);
+		
+		delivery.setTeamTotalRuns(teamTotalRuns);
+		
+		delivery.setDismissal(dismissal);
+		delivery.setPositionDismissed(positionDismissed);
+		delivery.setHowOut(howOut);
+		
+		//Player Logic to be coded
+		
+		delivery.setDeliveryCommentary(commentary);
+		delivery.setNotes(notes);
+		
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Match match = em.find(Match.class, matchId);
+		
+		System.out.println ("Match Found: " + match.getDescription());
+		match.addDelivery(delivery);
+		
+		
+		em.persist(delivery);
+		
+		em.getTransaction().commit();
+		em.close();
+		
+		return DeliveryAdviceFactory.createDeliveryAdvice(delivery);
+	}
+
+	public List<Match> retrieveMatches(String eMailAddress) {
+		List <Match> matches = null;
+		
+ 		EntityManager em = emf.createEntityManager();
+ 		
+ 		System.out.println("EM Created !!");
+		
+		Query q = em.createNamedQuery("findAccountByEmailAddress");
+		q.setParameter("email", eMailAddress);
+
+		System.out.println("Getting Matches for eMail Address " + eMailAddress);
+		List accounts = (List)q.getResultList();
+		
+		if (accounts == null) {
+			return null;
+		}
+		
+		System.out.println ("Accounts found :-)");
+		System.out.println ("No of Account = " + accounts.size());
+		
+		if (accounts.size() == 0) {
+			return null;
+		}
+		
+		Account account = (Account)accounts.get(0);
+		
+		matches = account.getMatches();
+		
+		
+		
+		em.close();
+		
+		
+		
+		return matches;
+		
+	}
+
+	public DeliveryAdvice recordDelivery(Delivery delivery) {
+		
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Match match = em.find(Match.class, delivery.getId().getMatchId());
+		
+		match.addDelivery(delivery);
+		
+		em.persist(delivery);
+		
+		em.getTransaction().commit();
+		em.close();
+		
+		return DeliveryAdviceFactory.createDeliveryAdvice(delivery);
+	}
+
+	public Delivery retrieveDelivery(DeliveryPK deliveryPK) {
+	
+		Delivery delivery = null;
+		
+		EntityManager em = emf.createEntityManager();
+		
+		
+		delivery = em.find(Delivery.class, deliveryPK);
+		
+		
+		em.close();
+		
+		return delivery;
+	}
+
+	public int clearMatchScore(int matchId) {
+		int noOfDeliveriesDeleted = 0;
+		
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Match match = em.find(Match.class, matchId);
+		
+		List<Delivery> deliveries = match.getDeliveries();
+		
+		Iterator<Delivery> deliveryIterator = deliveries.iterator();
+		
+		
+		while (deliveryIterator.hasNext()) {
+			em.remove(deliveryIterator.next());
+			noOfDeliveriesDeleted++;
+		}
+		
+		em.getTransaction().commit();
+		em.close();
+		
+		return noOfDeliveriesDeleted;
+	}
+
+	public List<Delivery> retrieveDeliveries(int matchId) {
+		EntityManager em = emf.createEntityManager();
+		
+		Match match = em.find(Match.class, matchId);
+		
+		List<Delivery> deliveries = match.getDeliveries();
+		
+		em.close();
+		
+		return deliveries;
+	}
+}

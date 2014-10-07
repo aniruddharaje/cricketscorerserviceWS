@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<wsdl:definitions name="CricketScoringService"  
+	xmlns:intf="http://www.mantr.com/cricket/CricketScoringService/interface" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://www.mantr.com/cricket/CricketScoringService/service" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	targetNamespace="http://www.mantr.com/cricket/CricketScoringService/service">
+ 
+    <wsdl:import 
+    	namespace="http://www.mantr.com/cricket/CricketScoringService/interface" 
+    	location="CricketScoringServicePortType.wsdl"/>
+    	
+    <wsdl:binding name="CricketScoringServiceSOAP" type="intf:CricketScorerServicePortType">
+ 	
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+  	<wsdl:operation name="CreateNewAccount">
+    	<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/CreateNewAccount" />
+    	<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveAccount">
+    		<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/RetrieveAccount" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	<wsdl:operation name="CreateMatch">
+    		<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/CreateMatch" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveMatches">
+    		<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/RetrieveMatches" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveDeliveries">
+    		<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/RetrieveDeliveries" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	<wsdl:operation name="ClearMatchScore">
+    		<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/ClearMatchScore" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	<wsdl:operation name="RecordDelivery">
+    		<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/RecordDelivery" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveDelivery">
+    		<soap:operation
+    			soapAction="http://www.mantr.com/cricket/CricketScoringService/RetrieveDelivery" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+  
+  </wsdl:binding>
+  
+  <wsdl:service name="CricketScoringService">
+    <wsdl:port binding="tns:CricketScoringServiceSOAP" name="CricketScoringServiceSOAP">
+      <soap:address location="http://www.mantr.com/cricket/CricketScoringService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

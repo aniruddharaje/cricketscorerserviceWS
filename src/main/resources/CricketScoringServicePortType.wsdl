@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<wsdl:definitions name="CricketScoringServicePortType" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://www.mantr.com/cricket/CricketScoringService/interface" 
+	targetNamespace="http://www.mantr.com/cricket/CricketScoringService/interface" 
+	xmlns:css="http://www.mantr.com/cricket/CricketScoringService/schema" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  
+  
+ 	<wsdl:types>
+    	<xsd:schema 
+ 			targetNamespace="http://www.mantr.com/cricket/CricketScoringService/interface">
+ 			
+ 			<xsd:import 
+ 				namespace="http://www.mantr.com/cricket/CricketScoringService/schema"
+ 				schemaLocation="CricketScoringService.xsd"/> 
+		</xsd:schema>
+    </wsdl:types>
+  
+  
+	<wsdl:message name="CreateNewAccountRequest">
+    	<wsdl:part name="parameters" element="css:CreateNewAccount"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewAccountResponse">
+    	<wsdl:part name="parameters" element="css:CreateNewAccountResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveAccountRequest">
+    	<wsdl:part name="parameters" element="css:RetrieveAccount"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveAccountResponse">
+    	<wsdl:part name="parameters" element="css:RetrieveAccountResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CreateMatchRequest">
+    	<wsdl:part name="parameters" element="css:CreateMatch"/>
+    </wsdl:message>
+    <wsdl:message name="CreateMatchResponse">
+    	<wsdl:part name="parameters" element="css:CreateMatchResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveMatchesRequest">
+    	<wsdl:part name="parameters" element="css:RetrieveMatches"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveMatchesResponse">
+    	<wsdl:part name="parameters" element="css:RetrieveMatchesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveDeliveriesRequest">
+    	<wsdl:part name="parameters" element="css:RetrieveDeliveries"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveDeliveriesResponse">
+    	<wsdl:part name="parameters" element="css:RetrieveDeliveriesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ClearMatchScoreRequest">
+    	<wsdl:part name="parameters" element="css:ClearMatchScore"/>
+    </wsdl:message>
+    <wsdl:message name="ClearMatchScoreResponse">
+    	<wsdl:part name="parameters" element="css:ClearMatchScoreResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RecordDeliveryRequest">
+    	<wsdl:part name="parameters" element="css:RecordDelivery"/>
+    </wsdl:message>
+    <wsdl:message name="RecordDeliveryResponse">
+    	<wsdl:part name="parameters" element="css:RecordDeliveryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveDeliveryRequest">
+    	<wsdl:part name="parameters" element="css:RetrieveDelivery"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveDeliveryResponse">
+    	<wsdl:part name="parameters" element="css:RetrieveDeliveryResponse"/>
+    </wsdl:message>
+    
+    
+    <wsdl:portType name="CricketScorerServicePortType">
+    	<wsdl:operation name="CreateNewAccount">
+    		<wsdl:input message="tns:CreateNewAccountRequest"/>
+    		<wsdl:output message="tns:CreateNewAccountResponse"/>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveAccount">
+    		<wsdl:input message="tns:RetrieveAccountRequest"/>
+    		<wsdl:output message="tns:RetrieveAccountResponse"/>
+    	</wsdl:operation>
+    	<wsdl:operation name="CreateMatch">
+    		<wsdl:input message="tns:CreateMatchRequest"/>
+    		<wsdl:output message="tns:CreateMatchResponse"/>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveMatches">
+    		<wsdl:input message="tns:RetrieveMatchesRequest"/>
+    		<wsdl:output message="tns:RetrieveMatchesResponse"/>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveDeliveries">
+    		<wsdl:input message="tns:RetrieveDeliveriesRequest"/>
+    		<wsdl:output message="tns:RetrieveDeliveriesResponse"/>
+    	</wsdl:operation>
+    	<wsdl:operation name="ClearMatchScore">
+    		<wsdl:input message="tns:ClearMatchScoreRequest"/>
+    		<wsdl:output message="tns:ClearMatchScoreResponse"/>
+    	</wsdl:operation>
+    	<wsdl:operation name="RecordDelivery">
+    		<wsdl:input message="tns:RecordDeliveryRequest"/>
+    		<wsdl:output message="tns:RecordDeliveryResponse"/>
+    	</wsdl:operation>
+    	<wsdl:operation name="RetrieveDelivery">
+    		<wsdl:input message="tns:RetrieveDeliveryRequest"/>
+    		<wsdl:output message="tns:RetrieveDeliveryResponse"/>
+    	</wsdl:operation>
+    </wsdl:portType>
+
+</wsdl:definitions>
